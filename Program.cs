@@ -1,15 +1,7 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+﻿using System;
+using 
 
-
-namespace TuongTacDB
+namespace TeleBot
 {
     internal static class Program
     {
@@ -19,7 +11,7 @@ namespace TuongTacDB
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            
         }
+    }
+}
