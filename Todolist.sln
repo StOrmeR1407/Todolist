@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Option1", "Option1", "{CF9B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealBot", "ReadBot\RealBot.csproj", "{997BFEA8-3907-44B3-8D93-8FF23EB2D014}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "botKMT", "..\CloneOfTeacherCop\botKMT\botKMT.csproj", "{1E38AA1D-443D-409B-889C-104FE75C8134}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{997BFEA8-3907-44B3-8D93-8FF23EB2D014}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{997BFEA8-3907-44B3-8D93-8FF23EB2D014}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{997BFEA8-3907-44B3-8D93-8FF23EB2D014}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E38AA1D-443D-409B-889C-104FE75C8134}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E38AA1D-443D-409B-889C-104FE75C8134}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E38AA1D-443D-409B-889C-104FE75C8134}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E38AA1D-443D-409B-889C-104FE75C8134}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

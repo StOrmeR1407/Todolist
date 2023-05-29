@@ -19,7 +19,7 @@ namespace ReadBot
     public partial class Form1 : Form
     {
         public TelegramBotClient botClient;
-        public long chatId = 6052997336; // Mk fix trước 1 cái chat id là tài khuản của mk! -> cái này liên quan đến việc nhúng ở bên app
+        public long chatId = 6052997336; 
 
         int logCounter = 0;
 
@@ -114,7 +114,12 @@ namespace ReadBot
                 {
                     reply = "FeedBack Giáo viên:🥲 Môn học lập trình Windows thầy Đỗ Duy Cốp. Giảng quá xá là HAY!😍😍";
                 }
-                
+                else if (messLow.StartsWith("/thoitiet")){
+                    string input = messageText.Substring(10);
+                    string[] parts = input.Split(',');
+                    reply = ThoiTiet.GetThoiTiet(parts[0], parts[1]);
+
+                }
                 else 
                 {
                     reply = "🤡Tôi nói pạn nghe: " + messageText;

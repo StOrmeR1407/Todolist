@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Windows.Documents;
+using System.Web;
 
-namespace botKMT
+namespace ReadBot
 {
     internal class ThoiTiet
     {
@@ -16,6 +16,7 @@ namespace botKMT
         public static string url = "https://www.nchmf.gov.vn/kttv/";
         public static string html = webClient.DownloadString(url);
         public static Dictionary<string, string> linkDataDictionary = ExtractLinkData(html);
+        public static string[] SampleTT = {"Nhiệt độ ", "Thời tiết ", "Độ ẩm ", "Hướng giớ "};
 
         //public static string pattern = "<a\\s+class=\"name-wt-city\"\\s+href=\"(.*?)\"[^>]*>(.*?)</a>";
         //public static MatchCollection matches = Regex.Matches(html, pattern);
@@ -31,6 +32,8 @@ namespace botKMT
             {
                 string href = match.Groups[1].Value;
                 string content = match.Groups[2].Value;
+                byte[] bytes = Encoding.Default.GetBytes(content);
+                content = Encoding.UTF8.GetString(bytes);
 
                 linkDataDictionary.Add(content, href);
             }
@@ -68,30 +71,46 @@ namespace botKMT
                 }
             }
 
-            using (WebClient client = new WebClient())
+            WebClient webClient = new WebClient();
+            string url = link;
+            string html = webClient.DownloadString(url);
+            string pattern = @"<div\s+class=""uk-width-3-4"">(.*?)<\/div>";
+            MatchCollection matches = Regex.Matches(html, pattern);
+            for (int i = 0; i < 4; i++)
             {
-                client.Encoding = Encoding.UTF8;
-                string html = client.DownloadString(link);
 
-                string pattern = "<div\\s+class=\"uk-width-1-4 uk-first-column\"[^>]*>(.*?)</div>";
-                MatchCollection matches = Regex.Matches(html, pattern, RegexOptions.Singleline);
-                foreach (Match match in matches)
-                {
-                    string content_of_web = match.Groups[1].Value;
-                    total_content += content_of_web + "\n";
-                }
+                string content = matches[i].Groups[1].Value;
+                byte[] bytes = Encoding.Default.GetBytes(content);
+                content = Encoding.UTF8.GetString(bytes);
+                total_content += SampleTT[i] + content + "\n";
             }
-
             return total_content;
-            }
+
+        }
+    
+    
 
         public static string Test()
         {
+            string tt = "Thời tiết hôm nay";
         WebClient webClient = new WebClient();
-        string url = "https://nchmf.gov.vn/kttv/";
+        string url = "https://nchmf.gov.vn/Kttv/vi-VN/1/lai-chau-w64.html";
         string html = webClient.DownloadString(url);
-            return html;
+        string pattern = @"<div\s+class=""uk-width-3-4"">(.*?)<\/div>";
+        MatchCollection matches = Regex.Matches(html, pattern);
+        for (int i = 0; i < 4; i++)
+            {
+                
+            string content = matches[0].Groups[1].Value;
+            byte[] bytes = Encoding.Default.GetBytes(content);
+            content = Encoding.UTF8.GetString(bytes);
+            tt += SampleTT[i] + content + "\n";
+                }
+            return tt;
+
         }
-        }
-    }
+    
+    }  
+}
+   
            
