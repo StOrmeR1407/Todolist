@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sql.cs" />
     <Compile Include="ThoiTiet.cs" />
   </ItemGroup>
   <ItemGroup>

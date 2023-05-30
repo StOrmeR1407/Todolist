@@ -38,6 +38,7 @@
             this.txtLog.Size = new System.Drawing.Size(1008, 700);
             this.txtLog.TabIndex = 0;
             this.txtLog.Text = "";
+            this.txtLog.TextChanged += new System.EventHandler(this.txtLog_TextChanged);
             // 
             // Form1
             // 

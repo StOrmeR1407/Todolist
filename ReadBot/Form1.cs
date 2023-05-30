@@ -13,6 +13,7 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types;
 using Telegram.Bot;
+using System.Diagnostics.Eventing.Reader;
 
 namespace ReadBot
 {
@@ -106,30 +107,72 @@ namespace ReadBot
                 AddLog($"{chatId}: {messageText}");  
 
                 string reply = "";  
-                string messLow = messageText.ToLower(); 
+                string messLow = messageText.ToLower();
 
                 // ----------- BẮT ĐẦU XỬ LÝ -----------------------------------------------------------------------------
-  
-                if (messLow.StartsWith("gv"))
+
+                if (messLow.StartsWith("/start"))
+                {
+                    reply = "🎉🎉🎉Chào mừng bạn đến với bot của Thái Học coder🎉🎉🎉" + "\n\n" +
+                    "Vui lòng chọn một mã để sử dụng:" + "\n" +
+                    "/thoitiet : Xem dự báo thời tiết của một tỉnh thành trong khoảng một tuần." + "\n" +
+                    "/timMaKH  : Tìm mã khách hàng trong sql" + "\n" +
+                    "/info     : Thông tin chủ bot";
+                }
+                else if (messLow.StartsWith("gv"))
                 {
                     reply = "FeedBack Giáo viên:🥲 Môn học lập trình Windows thầy Đỗ Duy Cốp. Giảng quá xá là HAY!😍😍";
                 }
-                else if (messLow.StartsWith("/thoitiet")){ 
-                    string input = messLow.Substring(10);
-                    if (input.Contains(",")) {
-                        string[] parts = input.Split(',');
-                        reply = ThoiTiet.GetThoiTiet(parts[0], parts[1]);
-                    }
-                    else
+                else if (messLow.StartsWith("/thoitiet"))
+                {
+                    if(messLow.Length < 11)
                     {
                         reply = "Bạn nên nhập theo cú pháp: Địa điểm + ',' + thời gian";
                     }
-                        
-
+                    else
+                    {
+                        string input = messLow.Substring(10);
+                        if (input.Contains(","))
+                        {
+                            string[] parts = input.Split(',');
+                            reply = ThoiTiet.GetThoiTiet(parts[0], parts[1]);
+                        }
+                        else
+                        {
+                            reply = "Bạn nên nhập theo cú pháp: Địa điểm + ',' + thời gian";
+                        }
+                    }
+                    
+                }
+                else if (messageText.StartsWith("/timMaKH"))
+                {
+                    if(messageText.Length < 10)
+                    {
+                        reply = "Bạn nên nhập một thứ gì đó để bot có thể hoạt động.";
+                    }
+                    else
+                    {
+                        string input2 = messageText.Substring(9);
+                        if (input2.Length > 0)
+                        {
+                            reply = Sql.timMaKH(input2);
+                        }
+                        else
+                        {
+                            reply = "Bạn nên nhập một thứ gì đó để bot có thể hoạt động.";
+                        }
+                    }  
+                }
+                else if (messLow.StartsWith("/info"))
+                {
+                    reply = "👨‍🎓Họ tên chủ bot: Trần Thái Học" + "\n" +
+                            "🎂Sinh ngày: 14/7/2002, cung Cự giải" + "\n" +
+                            "🎮Sở thích: Chơi game, xem phim, tập gym,..." + "\n" +
+                            "🖥Phương châm: Code for life, code til d*e.";
                 }
                 else 
                 {
-                    reply = "🤡Tôi nói pạn nghe: " + messageText;
+                    reply = "Cú pháp " + messageText +" này tôi chưa được sếp Học code, mong quý vị thông cảm";
                 }
 
 
@@ -160,6 +203,11 @@ namespace ReadBot
         private void Form1_Load(object sender, EventArgs e)
         {
             this.Visible = false;
+        }
+
+        private void txtLog_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
