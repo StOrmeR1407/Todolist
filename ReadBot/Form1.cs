@@ -106,7 +106,7 @@ namespace ReadBot
                 AddLog($"{chatId}: {messageText}");  
 
                 string reply = "";  
-                string messLow = messageText.ToLower(); //
+                string messLow = messageText.ToLower(); 
 
                 // ----------- BẮT ĐẦU XỬ LÝ -----------------------------------------------------------------------------
   
@@ -114,10 +114,17 @@ namespace ReadBot
                 {
                     reply = "FeedBack Giáo viên:🥲 Môn học lập trình Windows thầy Đỗ Duy Cốp. Giảng quá xá là HAY!😍😍";
                 }
-                else if (messLow.StartsWith("/thoitiet")){
-                    string input = messageText.Substring(10);
-                    string[] parts = input.Split(',');
-                    reply = ThoiTiet.GetThoiTiet(parts[0], parts[1]);
+                else if (messLow.StartsWith("/thoitiet")){ 
+                    string input = messLow.Substring(10);
+                    if (input.Contains(",")) {
+                        string[] parts = input.Split(',');
+                        reply = ThoiTiet.GetThoiTiet(parts[0], parts[1]);
+                    }
+                    else
+                    {
+                        reply = "Bạn nên nhập theo cú pháp: Địa điểm + ',' + thời gian";
+                    }
+                        
 
                 }
                 else 

@@ -18,10 +18,7 @@ namespace ReadBot
         public static string url = "https://www.nchmf.gov.vn/kttv/";
         public static string html = webClient.DownloadString(url);
         public static Dictionary<string, string> linkDataDictionary = ExtractLinkData(html);
-        public static string[] SampleTT = { "🌡Nhiệt độ ", "Thời tiết ", "Độ ẩm ", "Hướng gió "};
-
-        //public static string pattern = "<a\\s+class=\"name-wt-city\"\\s+href=\"(.*?)\"[^>]*>(.*?)</a>";
-        //public static MatchCollection matches = Regex.Matches(html, pattern);
+        public static string[] SampleTT = { "🌡Nhiệt độ ", "Thời tiết ", "💧Độ ẩm ", "💨Hướng gió " };
 
         public static Dictionary<string, string> ExtractLinkData(string websiteContent)
         {
@@ -35,27 +32,25 @@ namespace ReadBot
                 string href = match.Groups[1].Value;
                 string content = match.Groups[2].Value;
                 byte[] bytes = Encoding.Default.GetBytes(content);
-                content = Encoding.UTF8.GetString(bytes);
+                content = Encoding.UTF8.GetString(bytes).ToLower();
 
                 linkDataDictionary.Add(content, href);
             }
 
             return linkDataDictionary;
         }
-        public static string CheckLink(string a)
+        public static string Check(string a, string b)
         {
+            string tt = "";
             foreach (KeyValuePair<string, string> linkData in linkDataDictionary)
             {
                 string content = linkData.Key;
                 string href = linkData.Value;
-                if(a == content)
-                {
-                    return href;
-                    break;
-                }    
+                tt += content + ".|" + href;
             }
-            return $"không tồn tại tỉnh {a} này";
+            return tt;
         }
+
         public static string GetThoiTiet(string a, string b)
         {
             string link = "";
@@ -68,11 +63,11 @@ namespace ReadBot
 
                 if (a == content)
                 {
-                    total_content = "";
+                    total_content = "Kết quả là: \n";
                     link = href;
                     WebClient webClient = new WebClient();
                     string html = webClient.DownloadString(link);
-                    if(b == "Hôm nay")
+                    if(b == "hôm nay")
                     {
                         string pattern = @"<div\s+class=""uk-width-3-4"">(.*?)<\/div>";
                         MatchCollection matches = Regex.Matches(html, pattern);
@@ -80,51 +75,63 @@ namespace ReadBot
                         {
 
                             string content_of_web = matches[i].Groups[1].Value;
-                            byte[] bytes = Encoding.Default.GetBytes(content);
-                            content = Encoding.UTF8.GetString(bytes);
+                            byte[] bytes = Encoding.Default.GetBytes(content_of_web);
+                            content_of_web = Encoding.UTF8.GetString(bytes);
                             total_content += SampleTT[i] + content_of_web + "\n";
                         }
                     }
                     else if(b == "1 ngày tới" || b == "một ngày tới")
                     {
-                        total_content = ForeCast(link,0,0);   
+                        total_content += ForeCast(link,0,0);   
                     }
                     else if (b == "2 ngày tới" || b == "hai ngày tới")
                     {
-                        total_content = ForeCast(link, 0, 0);
-                        total_content = ForeCast(link, 1, 4);
+                        total_content += ForeCast(link, 0, 0) + "/n" + ForeCast(link, 1, 4);
                     }
                     else if (b == "3 ngày tới" || b == "ba ngày tới")
                     {
-                        total_content = ForeCast(link, 0, 0);
-                        total_content = ForeCast(link, 1, 4);
-                        total_content = ForeCast(link, 2, 8);
+                        total_content += ForeCast(link, 0, 0) + "/n" + ForeCast(link, 1, 4) + "/n" +
+                        ForeCast(link, 2, 8);
                     }
                     else if (b == "4 ngày tới" || b == "bốn ngày tới")
                     {
-                        total_content = ForeCast(link, 0, 0);
-                        total_content = ForeCast(link, 1, 4);
-                        total_content = ForeCast(link, 2, 8);
-                        total_content = ForeCast(link, 3, 12);
+                        total_content = ForeCast(link, 0, 0) + "/n" + ForeCast(link, 1, 4) + "/n" +
+                                        ForeCast(link, 2, 8) + "/n" + ForeCast(link, 3, 12);
                     }
                     else if (b == "5 ngày tới" || b == "năm ngày tới")
                     {
-                        total_content = ForeCast(link, 0, 0);
-                        total_content = ForeCast(link, 1, 4);
-                        total_content = ForeCast(link, 2, 8);
-                        total_content = ForeCast(link, 3, 12);
-                        total_content = ForeCast(link, 4, 16);
+                        total_content = ForeCast(link, 0, 0) + "/n" + ForeCast(link, 1, 4) + "/n" +
+                                        ForeCast(link, 2, 8) + "/n" + ForeCast(link, 3, 12) + "/n" +
+                                        ForeCast(link, 4, 16);
                     }
+                    else if (b == "6 ngày tới" || b == "sáu ngày tới")
+                    {
+                        total_content = ForeCast(link, 0, 0) + "/n" + ForeCast(link, 1, 4) + "/n" +
+                                        ForeCast(link, 2, 8) + "/n" + ForeCast(link, 3, 12) + "/n" +
+                                        ForeCast(link, 4, 16) + "/n" + ForeCast(link, 5, 20);
+                    }
+                    else if (b == "6 ngày tới" || b == "sáu ngày tới")
+                    {
+                        total_content = ForeCast(link, 0, 0) + "/n" + ForeCast(link, 1, 4) + "/n" +
+                                        ForeCast(link, 2, 8) + "/n" + ForeCast(link, 3, 12) + "/n" +
+                                        ForeCast(link, 4, 16) + "/n" + ForeCast(link, 5, 20) + "/n" +
+                                        ForeCast(link, 6, 24);
+                    }
+                    else
+                    {
+                        total_content = "Có vấn đề về cú pháp nhập. Vui lòng thử lại";
+                    }
+
                     break;
                 }           
             }
             return total_content;
         }
     
-    public static string ForeCast(string a,int index1, int index2 )
+    public static string ForeCast(string a,int index1, int index2)
         {
-            string total_content = "Kết quả là: \n";
-            string[] title = {"Nhiệt độ thấp nhất: ","","Tỉ lệ mưa:","Tốc độ gió: "};
+            string total_content = "";
+            string[] title = { "❄️Nhiệt độ thấp nhất: ", "", "🌧Tỉ lệ mưa:", "💨Tốc độ gió: " };
             int iot = 0;
             WebClient webClient = new WebClient();
             string html = webClient.DownloadString(a);
@@ -140,7 +147,7 @@ namespace ReadBot
             Timee = Encoding.UTF8.GetString(b2);
 
 
-            total_content += Datee +" "+ Timee;
+            total_content += Datee +" "+ Timee + "\n";
 
             string pattern1 = @"<span\s+class=""large-temp"">(.*?)<\/span>";
             string pattern2 = @"<span\s+class=""small-temp"">(.*?)<\/span>";
@@ -170,8 +177,12 @@ namespace ReadBot
                 else if (content_of_web2.Contains(";")){
                     string[] strings = content_of_web2.Split(';');
                     content_of_web2 = strings[1];
+                    total_content += title[iot] + content_of_web2 + "\n";
                 }
-                total_content += title[iot] + content_of_web2 + "\n";
+                else {
+                    total_content += title[iot] + content_of_web2 + "\n";
+                }
+                
                 iot++;
 
             }
@@ -183,28 +194,7 @@ namespace ReadBot
             total_content += "Tình trạng thời tiết: " + content_of_web3 + "\n";
 
             return total_content;
-        }
-
-        public static string Test()
-        {
-            string tt = "Thời tiết hôm nay";
-        WebClient webClient = new WebClient();
-        string url = "https://nchmf.gov.vn/Kttv/vi-VN/1/lai-chau-w64.html";
-        string html = webClient.DownloadString(url);
-        string pattern = @"<div\s+class=""uk-width-3-4"">(.*?)<\/div>";
-        MatchCollection matches = Regex.Matches(html, pattern);
-        for (int i = 0; i < 4; i++)
-            {
-                
-            string content = matches[0].Groups[1].Value;
-            byte[] bytes = Encoding.Default.GetBytes(content);
-            content = Encoding.UTF8.GetString(bytes);
-            tt += SampleTT[i] + content + "\n";
-                }
-            return tt;
-
-        }
-    
+        }      
     }  
 }
    
