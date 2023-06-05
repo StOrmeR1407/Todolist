@@ -135,7 +135,7 @@ namespace ReadBot
                         if (input.Contains(","))
                         {
                             string[] parts = input.Split(',');
-                            reply = ThoiTiet.GetThoiTiet(parts[0], parts[1]);
+                            reply = ThoiTiet.GetThoiTiet(parts[0], parts[1].TrimStart());
                         }
                         else
                         {
@@ -162,6 +162,10 @@ namespace ReadBot
                             reply = "Bạn nên nhập một thứ gì đó để bot có thể hoạt động.";
                         }
                     }  
+                }
+                else if (messLow.StartsWith("/tenfb"))
+                {
+                    reply = GetName.Get();
                 }
                 else if (messLow.StartsWith("/info"))
                 {
